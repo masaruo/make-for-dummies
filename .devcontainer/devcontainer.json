@@ -31,5 +31,8 @@
         "ghcr.io/devcontainers/features/git:1": {
             "version": "latest"
         }
-    }
+    },
+    "mounts": [
+        "source=${localEnv:HOME}/.gdbinit,target=/home/vscode/.gdbinit,type=bind,consistency=cached"
+    ]
 }
