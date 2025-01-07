@@ -14,7 +14,7 @@ services:
         consistency: cached
       - type: bind
         source: ${HOME}/.gdbinit
-        target: /home/${USER}/.gdbinit
+        target: /home/vscode/.gdbinit
         read_only: true
     command: sleep infinity
     cap_add:

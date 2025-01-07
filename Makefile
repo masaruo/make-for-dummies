@@ -1,9 +1,12 @@
 
+all:
+
 docker:
 	docker container exec -it cpp_container bash
 
 clean:
-	docker image prune
+	rm -rf **/a.out
 	docker container prune
+	docker image prune
 
-.PHONY: clean
+.PHONY: clean docker
