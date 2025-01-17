@@ -1,11 +1,12 @@
 NAME := a.out
 CC := cc
-INC := -I./includes -I./fakelibx
+CPPFLAGS :=	-I./includes \
+			-I./fakelibx
 CFLAGS := -Wall -Wextra -MMD -MP
-LDFLAGS :=
-LIBFT := fakelibx/libfake.a
 SRC := common.c piyo.c hoge.c main.c
 OBJDIR := ./obj
+LDFLAGS := -Lfakelibx
+LDLIBS := -lfake
 #OBJ = $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
 #DEP = $(OBJ:%.o=%.d)
 
@@ -26,16 +27,13 @@ $(warning OBJ=[$(OBJ)], DEP=[$(DEP)])
 all: $(NAME)
 
 $(OBJDIR)/%.o : %.c | $(OBJDIR)
-	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
-$(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(LDFLAGS) -o $@ $^
+$(NAME): $(OBJ)
+	$(CC) $(LDFLAGS) $(LDLIBS) -o $@ $^
 
 $(OBJDIR):
 	mkdir -p $@
-
-$(LIBFT):
-	$(MAKE) -C ./fakelibx
 
 debug: clean
 	$(MAKE) DEBUG=true
@@ -43,7 +41,6 @@ debug: clean
 clean:
 	$(RM) $(NAME)
 	$(RM) -r $(OBJDIR)
-	$(MAKE) clean -C ./fakelibx
 
 .PHONY: clean debug
 

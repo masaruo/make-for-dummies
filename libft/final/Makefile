@@ -1,7 +1,7 @@
 NAME := a.out
 CC := cc
+CPPFLAGS := -I./includes
 CFLAGS := -Wall -Wextra -Werror
-INC := -I./includes
 SRC := main.c func.c func1.c
 OBJDIR := ./obj
 OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
@@ -12,7 +12,7 @@ all: $(NAME)
 
 $(OBJDIR)/%.o : %.c | $(OBJDIR)
 #$(warning compiling target=$@ from $^)
-	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(OBJDIR):
 #$(warning $(OBJDIR))
