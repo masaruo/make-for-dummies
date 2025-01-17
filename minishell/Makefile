@@ -42,7 +42,6 @@ debug: clean
 
 clean:
 	$(RM) $(NAME)
-	$(RM) $(NAME)_bonus
 	$(RM) -r $(OBJDIR)
 	$(MAKE) clean -C ./fakelibx
 
