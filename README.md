@@ -26,8 +26,9 @@
 NAME := a.out
 CC := cc
 CPPFLAGS :=	-I./includes \
-			-I./fakelibx
-CFLAGS := -Wall -Wextra -MMD -MP
+			-I./fakelibx \
+			-MMD -MP
+CFLAGS := -Wall -Wextra
 SRC := common.c piyo.c hoge.c main.c
 OBJDIR := ./obj
 LDFLAGS := -Lfakelibx
