@@ -1,14 +1,12 @@
 NAME := a.out
 CC := cc
 CFLAGS := -Wall -Wextra -Werror
-INC :=	-I./includes \
-		-I./fakelibx
-SRC := main.c process.c parse.c
+INC := -I./includes
+SRC := main.c func.c func1.c
 OBJDIR := ./obj
 OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
-LDFLAGS := -Lfakelibx -lfake
 
-vpath %.c src:src/process:src/process/parse
+vpath %.c src
 
 all: $(NAME)
 
@@ -20,16 +18,17 @@ $(OBJDIR):
 #$(warning $(OBJDIR))
 	mkdir -p $@
 
-$(NAME): $(OBJ) ./fakelibx/libfake.a
-	$(CC) $(LDFLAGS) $^ -o $@
 
-./fakelibx/libfake.a:
-	$(MAKE) -C ./fakelibx
+$(NAME): $(OBJ)
+#$(warning target is $@ and objs are $^)
+	$(CC) $^ -o $@
 
 clean:
 	$(RM) $(NAME)
 	$(RM) -r $(OBJDIR)
-	$(MAKE) clean -C ./fakelibx
 
-.PHONY: clean
+re: clean
+	$(MAKE) all
+
+.PHONY: clean re
 

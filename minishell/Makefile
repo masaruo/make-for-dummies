@@ -1,50 +1,35 @@
 NAME := a.out
 CC := cc
-INC := -I./includes -I./fakelibx
-CFLAGS := -Wall -Wextra -MMD -MP
-LDFLAGS :=
-LIBFT := fakelibx/libfake.a
-SRC := common.c piyo.c hoge.c main.c
+CFLAGS := -Wall -Wextra -Werror
+INC :=	-I./includes \
+		-I./fakelibx
+SRC := main.c process.c parse.c
 OBJDIR := ./obj
-#OBJ = $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
-#DEP = $(OBJ:%.o=%.d)
+OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
+LDFLAGS := -Lfakelibx -lfake
 
-vpath %.c ./src:./src/piyo:./src/piyo/hoge
-
-ifeq ($(DEBUG), true)
-	CFLAGS += -g3 -O0 -fsanitize=address
-	LDFLAGS += -fsanitize=address
-else
-	CFLAGS += -Werror
-endif
-
-OBJ := $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
-DEP := $(OBJ:%.o=%.d)
-
-$(warning OBJ=[$(OBJ)], DEP=[$(DEP)])
+vpath %.c src:src/process:src/process/parse
 
 all: $(NAME)
 
 $(OBJDIR)/%.o : %.c | $(OBJDIR)
-	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
-
-$(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(LDFLAGS) -o $@ $^
+#$(warning compiling target=$@ from $^)
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(OBJDIR):
+#$(warning $(OBJDIR))
 	mkdir -p $@
 
-$(LIBFT):
-	$(MAKE) -C ./fakelibx
+$(NAME): $(OBJ) ./fakelibx/libfake.a
+	$(CC) $(LDFLAGS) $^ -o $@
 
-debug: clean
-	$(MAKE) DEBUG=true
+./fakelibx/libfake.a:
+	$(MAKE) -C ./fakelibx
 
 clean:
 	$(RM) $(NAME)
 	$(RM) -r $(OBJDIR)
 	$(MAKE) clean -C ./fakelibx
 
-.PHONY: clean debug
+.PHONY: clean
 
--include $(DEP)
