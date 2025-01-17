@@ -21,16 +21,17 @@
 	* これからの育て方
 
 ### オーディエンス対象
-* 以下のMakefileが`minishell級`の最終盤なので、これを見て、知らないことがあるので、学びたいと思われる方。
+* 以下のMakefileが`minishell級`の最終版です。これを見て、知らないから学びたいと思われる方が対象です。
 ```
 NAME := a.out
 CC := cc
-INC := -I./includes -I./fakelibx
+CPPFLAGS :=	-I./includes \
+			-I./fakelibx
 CFLAGS := -Wall -Wextra -MMD -MP
-LDFLAGS :=
-LIBFT := fakelibx/libfake.a
 SRC := common.c piyo.c hoge.c main.c
 OBJDIR := ./obj
+LDFLAGS := -Lfakelibx
+LDLIBS := -lfake
 #OBJ = $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
 #DEP = $(OBJ:%.o=%.d)
 
@@ -51,16 +52,13 @@ $(warning OBJ=[$(OBJ)], DEP=[$(DEP)])
 all: $(NAME)
 
 $(OBJDIR)/%.o : %.c | $(OBJDIR)
-	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
-$(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(LDFLAGS) -o $@ $^
+$(NAME): $(OBJ)
+	$(CC) $(LDFLAGS) $(LDLIBS) -o $@ $^
 
 $(OBJDIR):
 	mkdir -p $@
-
-$(LIBFT):
-	$(MAKE) -C ./fakelibx
 
 debug: clean
 	$(MAKE) DEBUG=true
@@ -68,12 +66,12 @@ debug: clean
 clean:
 	$(RM) $(NAME)
 	$(RM) -r $(OBJDIR)
-	$(MAKE) clean -C ./fakelibx
 
 .PHONY: clean debug
 
 -include $(DEP)
+
 ```
 
 > [!WARNING]
->私自身、Makeの複雑さにいつも発狂しているので、あまり難しい機能はカバーできません＆＆質問にも答えられません。参加者は優しく見守る心構えが必要かも！？
+>私自身、Makeの複雑さにいつも`orz`しているので、あまり難しい機能はカバーできません＆＆質問にも答えらないものが多いです。参加者は優しく見守る心構えが必要かも！？
