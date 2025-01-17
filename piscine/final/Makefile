@@ -1,11 +1,11 @@
-NAME := piscine
+NAME := a.out
 CC := cc
 CFLAGS := -Wall -Wextra -Werror
 
 all: $(NAME)
 
 $(NAME): ./src/main.o
-	$(CC) ./src/main.o -o $(NAME)
+	$(CC) $(CFLAGS) ./src/main.o -o $(NAME)
 
 ./src/main.o : ./src/main.c
 	$(CC) $(CFLAGS) ./src/main.c -c -o ./src/main.o -I./includes
@@ -16,3 +16,4 @@ clean:
 
 .PHONY: clean
 
+#簡単だよね、と思いきや、良くある必要ないことしているのわかります？

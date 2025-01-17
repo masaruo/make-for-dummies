@@ -1,4 +1,4 @@
-NAME := a.out
+NAME := libft
 CC := cc
 CFLAGS := -Wall -Wextra -Werror
 INC := -I./includes

@@ -1,4 +1,4 @@
-NAME := piscine
+NAME := a.out
 CC := cc
 CFLAGS := -Wall -Wextra -Werror
 
