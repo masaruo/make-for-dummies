@@ -1,18 +1,35 @@
 NAME := a.out
 CC := cc
+CPPFLAGS := -I./includes
 CFLAGS := -Wall -Wextra -Werror
+SRC := main.c func.c func1.c
+OBJDIR := ./obj
+OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
+
+vpath %.c src
 
 all: $(NAME)
 
-$(NAME): ./src/main.o
-	$(CC) ./src/main.o -o $(NAME)
+$(warning OBJ:[$(OBJ)])
 
-./src/main.o : ./src/main.c
-	$(CC) $(CFLAGS) ./src/main.c -c -o ./src/main.o -I./includes
+$(OBJDIR)/%.o : %.c | $(OBJDIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR):
+	mkdir -p $@
+
+
+$(NAME): $(OBJ)
+# $(warning target is [$@] and objs are [$^] and OBJ is [$(OBJ)])
+# @echo "shell target <$@> and objs are <$^> and OBJ is <$(OBJ)>"
+	$(CC) $^ -o $@
 
 clean:
-	rm -f $(NAME)
-	$(RM) ./src/*.o
+	$(RM) $(NAME)
+	$(RM) -r $(OBJDIR)
 
-.PHONY: clean
+re: clean
+	$(MAKE) all
+
+.PHONY: clean re all
 

@@ -30,5 +30,5 @@ clean:
 re: clean
 	$(MAKE) all
 
-.PHONY: clean re
+.PHONY: clean re all
 

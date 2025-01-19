@@ -43,6 +43,6 @@ clean:
 	$(RM) $(NAME)
 	$(RM) -r $(OBJDIR)
 
-.PHONY: clean debug
+.PHONY: clean debug all
 
 -include $(DEP)

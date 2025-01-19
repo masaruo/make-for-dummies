@@ -2,5 +2,5 @@
 
 void process()
 {
-	print("this is fdf process\n");
+	fakeft_print("fakeft print\n");
 }

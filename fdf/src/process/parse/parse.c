@@ -1,6 +1,6 @@
-#include "fake.h"
+#include "fakelibx.h"
 
 void parse(void)
 {
-	print("this is parse\n");
+	fakelibx_print("fakelibx_print\n");
 }
