@@ -11,6 +11,7 @@
 	* コンパイルの流れ
 2. libftレベル
 	* `*.c`filesの増加
+	* `*.o`filesが散らかるのを防ぐ
 	* make版`printf`
 3. fdfレベル
 	* ライブラリ
