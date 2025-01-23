@@ -1,6 +1,6 @@
 NAME := a.out
 SRC := main.c
-CC := cc
+CC := gcc
 CFLAGS = -Wall
 
 $(NAME): main.o
@@ -15,7 +15,10 @@ main.s: main.i
 main.i: main.c
 	$(CC) $(CFLAGS) -E $^ -o $@
 
+gcc:
+	cc -save-temps main.c -o a.out
+
 clean:
-	$(RM) *.o a.out *.i *.s
+	$(RM) *.o a.out *.i *.s *.bc
 
 .PHONY: clean
