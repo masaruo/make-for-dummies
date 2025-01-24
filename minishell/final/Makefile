@@ -1,48 +1,45 @@
 NAME := a.out
 CC := cc
-CPPFLAGS :=	-I./includes \
-			-I./fakelibx \
-			-MMD -MP
+CPPFLAGS := -I./includes -Ifakelibx -MMD -MP
 CFLAGS := -Wall -Wextra
-SRC := common.c piyo.c hoge.c main.c
+SRC := main.c common.c piyo.c hoge.c
 OBJDIR := ./obj
+OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
+DEP := $(OBJ:%.o=%.d)
 LDFLAGS := -Lfakelibx
 LDLIBS := -lfake
-#OBJ = $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
-#DEP = $(OBJ:%.o=%.d)
 
 vpath %.c ./src:./src/piyo:./src/piyo/hoge
 
 ifeq ($(DEBUG), true)
-	CFLAGS += -g3 -O0 -fsanitize=address
-	LDFLAGS += -fsanitize=address
+CFLAGS += -g -O0 -fsanitize=address
+LDFLAGS += -fsanitize=address
 else
-	CFLAGS += -Werror
+CFLAGS += -Werror
 endif
-
-OBJ := $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
-DEP := $(OBJ:%.o=%.d)
-
-$(warning OBJ=[$(OBJ)], DEP=[$(DEP)])
 
 all: $(NAME)
 
-$(OBJDIR)/%.o : %.c | $(OBJDIR)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+$(warning obj=$(OBJ))
 
 $(NAME): $(OBJ)
-	$(CC) $(LDFLAGS) $(LDLIBS) -o $@ $^
+	$(CC) $^ -o $@ $(LDFLAGS) $(LDLIBS)
+
+$(OBJDIR)/%.o : %.c | $(OBJDIR)
+	$(CC) $(CFLAGS) $< -c -o $@ $(CPPFLAGS)
 
 $(OBJDIR):
-	mkdir -p $@
+	mkdir -p $(OBJDIR)
+
+clean:
+	$(RM) -r $(NAME) $(OBJ) $(OBJDIR)
+
+re: clean
+	$(MAKE) --debug=v
 
 debug: clean
 	$(MAKE) DEBUG=true
 
-clean:
-	$(RM) $(NAME)
-	$(RM) -r $(OBJDIR)
-
-.PHONY: clean debug all
+.PHONY: clean all re
 
 -include $(DEP)

@@ -6,29 +6,27 @@ SRC := main.c func.c func1.c
 OBJDIR := ./obj
 OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
 
-vpath %.c src
-
 all: $(NAME)
 
-$(OBJDIR)/%.o : %.c | $(OBJDIR)
-#$(warning compiling target=$@ from $^)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+vpath %.c ./src
 
-$(OBJDIR):
-#$(warning $(OBJDIR))
-	mkdir -p $@
-
+$(warning obj=$(OBJ))
 
 $(NAME): $(OBJ)
-#$(warning target is $@ and objs are $^)
 	$(CC) $^ -o $@
 
+$(OBJDIR)/%.o : %.c | $(OBJDIR)
+	$(CC) $(CFLAGS) $< -c -o $@ $(CPPFLAGS)
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
 clean:
-	$(RM) $(NAME)
-	$(RM) -r $(OBJDIR)
+	$(RM) -r $(NAME) $(OBJ) $(OBJDIR)
 
 re: clean
-	$(MAKE) all
+	$(MAKE) --debug=v
 
-.PHONY: clean re all
+.PHONY: clean all re
 
+#この中で、必要ないことしてませんか？

@@ -1,8 +1,6 @@
 NAME := a.out
 CC := cc
-CPPFLAGS :=	-I./includes \
-			-I./fakelibx \
-			-I./fakeft
+CPPFLAGS := -I./includes -Ifakeft -Ifakelibx
 CFLAGS := -Wall -Wextra -Werror
 SRC := main.c process.c parse.c
 OBJDIR := ./obj
@@ -10,28 +8,29 @@ OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
 LDFLAGS := -Lfakelibx
 LDLIBS := -lfakelibx
 
-vpath %.c src:src/process:src/process/parse
-
 all: $(NAME)
 
+vpath %.c ./src:./src/process:./src/process/parse
+
+$(warning obj=$(OBJ))
+
+$(NAME): $(OBJ) fakeft/libfake.a
+	$(CC) $^ -o $@ $(LDFLAGS) $(LDLIBS)
+
+fakeft/libfake.a:
+	$(MAKE) -C fakeft
+
 $(OBJDIR)/%.o : %.c | $(OBJDIR)
-#$(warning compiling target=$@ from $^)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $< -c -o $@ $(CPPFLAGS)
 
 $(OBJDIR):
-#$(warning $(OBJDIR))
-	mkdir -p $@
-
-$(NAME): $(OBJ) ./fakeft/libfake.a
-	$(CC) $^ $(LDFLAGS) $(LDLIBS) -o $@
-
-./fakeft/libfake.a:
-	$(MAKE) -C ./fakeft
+	mkdir -p $(OBJDIR)
 
 clean:
-	$(RM) $(NAME)
-	$(RM) -r $(OBJDIR)
-	$(MAKE) clean -C ./fakeft
+	$(RM) -r $(NAME) $(OBJ) $(OBJDIR)
+	$(MAKE) clean -C fakeft
 
-.PHONY: all clean
+re: clean
+	$(MAKE) --debug=v
 
+.PHONY: clean all re

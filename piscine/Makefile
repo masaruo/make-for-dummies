@@ -14,6 +14,9 @@ clean:
 	rm -f $(NAME)
 	$(RM) ./src/*.o
 
-.PHONY: clean all
+re: clean
+	$(MAKE) --debug=v
+
+.PHONY: clean all re
 
 #この中で、必要ないことしてませんか？
