@@ -15,8 +15,8 @@ main.s: main.i
 main.i: main.c
 	$(CC) $(CFLAGS) -E $^ -o $@
 
-gcc:
-	cc -save-temps main.c -o a.out
+verbose:
+	cc -save-temps -v main.c -o a.out
 
 clean:
 	$(RM) *.o a.out *.i *.s *.bc
