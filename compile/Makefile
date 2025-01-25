@@ -13,10 +13,10 @@ main.s: main.i
 	$(CC) $(CFLAGS) -S $^ -o $@
 
 main.i: main.c
-	$(CC) $(CFLAGS) -E $^ -o $@
+	$(CC) $(CFLAGS) -E $^ -o $@ -Iincludes
 
 verbose:
-	cc -save-temps -v main.c -o a.out
+	cc -save-temps -v main.c -o a.out -Iincludes
 
 clean:
 	$(RM) *.o a.out *.i *.s *.bc

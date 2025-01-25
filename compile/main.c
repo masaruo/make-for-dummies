@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "header.h"
 #define MSG "hello"
 
 int main(void)
