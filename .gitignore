@@ -25,10 +25,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-bonus
 a.out
 **/obj/
-*.md
 *.o
 *.i
 *.s
