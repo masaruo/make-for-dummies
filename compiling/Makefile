@@ -1,6 +1,6 @@
-NAME := a.out
+NAME := hoge
 SRC := main.c
-CC := gcc
+CC := cc
 CFLAGS = -Wall
 
 $(NAME): main.o
@@ -13,12 +13,12 @@ main.s: main.i
 	$(CC) $(CFLAGS) -S $^ -o $@
 
 main.i: main.c
-	$(CC) $(CFLAGS) -E $^ -o $@ -Iincludes
+	$(CC) $(CFLAGS) -E $^ -o $@
 
 verbose:
-	cc -save-temps -v main.c -o a.out -Iincludes
+	cc -save-temps -v $(SRC) -o $(NAME)
 
 clean:
-	$(RM) *.o a.out *.i *.s *.bc
+	$(RM) *.o *.i *.s *.bc $(NAME)
 
 .PHONY: clean
